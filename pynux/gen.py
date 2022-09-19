@@ -1,4 +1,5 @@
 import os
+import webbrowser
 
 def ls():
     for file in os.listdir():
@@ -18,3 +19,6 @@ def blank():
 
 def clear():
     os.system('cmd /c "cls"')
+
+def repo():
+    webbrowser.open('http://gitea.local:3000/novc/pynux')

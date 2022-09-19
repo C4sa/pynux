@@ -33,6 +33,9 @@ while True:
         elif cmd == 'ls':
             ls()
 
+        elif cmd == 'repo':
+            repo()
+
         elif cmd == 'sudoer':
             sudoer_mng(cmd_args_lst, current_user, sudoers)
 
