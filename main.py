@@ -1,6 +1,6 @@
 # imports
 from pynux import *
-import os
+import webbrowser
 
 # variables
 username = 'user'
@@ -12,8 +12,20 @@ prefix_user = '\033[1;36m┌──(\033[1;34m' + username + '@' + hostname + '\0
 
 sudoers = []
 
+# motd
+welcome_file = open('root/lib/welcome')
+welcome_text = welcome_file.read()
+
+if os.path.exists('root/etc/custom_motd.txt'):
+    custom_motd_file = open('root/etc/custom_motd.txt')
+else:
+    custom_motd_file = open('root/lib/custom_motd.txt')
+
+custom_motd_text = custom_motd_file.read()
+print(welcome_text + '\n\n' + custom_motd_text + '\n')
+
 # main
-while True:
+while True: 
     cmd = input(prefix_user)
     cmd_args_lst = cmd.split()
     if len(cmd_args_lst) == 0:
@@ -24,10 +36,10 @@ while True:
         if cmd == 'instr':
             print('instructions will go here soon™')
 
-        if cmd == 'blank':
+        elif cmd == 'blank':
             blank()
 
-        if cmd == 'clear' or cmd == 'cls':
+        elif cmd == 'clear' or cmd == 'cls':
             clear()
 
         elif cmd == 'ls':
@@ -36,11 +48,17 @@ while True:
         elif cmd == 'repo':
             repo()
 
+        elif cmd == 'motd':
+            motd()
+
+        elif cmd == 'dbg':
+            cyan('@@@ debug')
+
         elif cmd == 'sudoer':
-            sudoer_mng(cmd_args_lst, current_user, sudoers)
+            sudoer_mng(cmd_args_lst[1:], current_user, sudoers)
 
         elif cmd == 'sys':
             sys_handler(cmd_args_lst[1:])
 
         else:
-            err('Command \"' + cmd + '\" is not defined. \033[1;30m', '1')
+            err('Command \"' + cmd + '\" is not defined.', '1')

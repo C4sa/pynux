@@ -1,0 +1,2 @@
+You can customize this message via the motd command,
+or editing this file (custom_motd.txt) manually.
