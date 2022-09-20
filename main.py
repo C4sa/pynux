@@ -12,6 +12,8 @@ prefix_user = '\033[1;36m┌──(\033[1;34m' + username + '@' + hostname + '\0
 
 sudoers = []
 
+show_welcome_msg = True
+
 # motd
 welcome_file = open('root/lib/welcome')
 welcome_text = welcome_file.read()
@@ -21,7 +23,7 @@ if os.path.exists('root/etc/custom_motd.txt'):
 else:
     custom_motd_file = open('root/lib/custom_motd.txt')
 
-custom_motd_text = custom_motd_file.read()
+custom_motd_text = custom_motd_file.read()      
 print(welcome_text + '\n\n' + custom_motd_text + '\n')
 
 # main
@@ -59,6 +61,15 @@ while True:
 
         elif cmd == 'sys':
             sys_handler(cmd_args_lst[1:])
+
+        elif cmd == 'wlctoggle':
+            toggle_welcome_msg(cmd_args_lst[1:], show_welcome_msg)
+
+        elif cmd == 'cat':
+            cat(cmd_args_lst[1:])
+
+        elif cmd == 'prd':
+            prd()
 
         else:
             err('Command \"' + cmd + '\" is not defined.', '1')

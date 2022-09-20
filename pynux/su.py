@@ -5,8 +5,7 @@ from pynux.col import *
 
 def sudoer_mng(cmd_args_lst, current_user, sudoers_list):
     if len(cmd_args_lst) == 0:
-        # print('Arguments for \033[1;34msudoer\033[0m:\n\tadd [\'self\' / username] - Add an user to the sudoers list.')     
-        print('Arguments for ' + blue('sudoer') + ':')
+        print('Arguments for ' + blue('sudoer') + ':\n\tadd [\'self\'/username] - Add an user to the sudoers list.\n\tremove [\'self\'/username] - Remove an user from the sudoers list.')
         return
 
     if cmd_args_lst[0] == 'add':
