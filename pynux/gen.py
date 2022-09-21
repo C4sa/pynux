@@ -80,5 +80,5 @@ def cat(cmd_args_lst):
         err('Expected only 1 argument ([path])', '3')
 
 def prd():
-    path = os.path.realpath('main.py')
+    path = os.path.dirname(os.path.abspath('main.py'))
     print(path)
