@@ -1,5 +1,6 @@
 import os
 import shutil
+import pickle
 import webbrowser
 from pynux.col import *
 from pynux.log import *
@@ -56,13 +57,27 @@ def toggle_welcome_msg(cmd_args_lst, show_welcome_msg):
         if cmd_args_lst[0] == 'on':
             print('The welcome message will be ' + green('visible') + '.')
             show_welcome_msg = True
+            # pickle save
+            with open('root/etc/options.txt', 'wb') as f:
+                pickle.dump([show_welcome_msg], f, protocol=2)
         elif cmd_args_lst[0] == 'off':
             print('The welcome message will ' + red('no longer') + ' be visible.')
             show_welcome_msg = False
+            # pickle save
+            with open('root/etc/options.txt', 'wb') as f:
+                pickle.dump([show_welcome_msg], f, protocol=2)
         else:
             err('One or more argument(s) couldn\'t be processed.', '2')
     else:
         err('Expected only 1 argument (on/off)', '3')
+
+def welcome_msg_status(show_welcome_msg):
+    if show_welcome_msg == True:
+        print(green('on'))
+    elif show_welcome_msg == False:
+        print(red('off'))
+    else:
+        print(magenta('The options file (root/etc/options) is corrupt, please submit an issue if it doesn\'t exist\nalready on the GitHub repo issues page via the repo command.'))
 
 def cat(cmd_args_lst):
     if len(cmd_args_lst) == 0:
