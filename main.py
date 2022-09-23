@@ -20,13 +20,17 @@ current_path = default_path
 
 prefix_user = cyan('┌──(') + blue(username + '@' + hostname) + cyan(') - [') + green(current_path) + cyan(']') + cyan('\n└─') + blue('$ ')
 
-sudoers = []
+sudoers = ['root']
 
 show_welcome_msg = True
 
 # load options using pickle
 with open('root/etc/options.txt', 'rb') as f:
     show_welcome_msg = pickle.load(f)
+
+# load username & hostname using pickle
+with open('root/etc/user.txt', 'rb') as f:
+    username, hostname = pickle.load(f)
 
 # motd
 welcome_file = open('root/lib/welcome')
@@ -107,6 +111,12 @@ while True:
 
         elif cmd == 'aaa':
             aaa()
+
+        elif cmd == 'uname':
+            username = uname(cmd_args_lst[1:], username, hostname)
+
+        elif cmd == 'hostname':
+            hostname = hname(cmd_args_lst[1:], hostname, username)
             
         else:
             err('Command \"' + cmd + '\" is not defined.', '1')

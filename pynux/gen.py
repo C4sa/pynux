@@ -98,6 +98,7 @@ def cat(cmd_args_lst):
 def prd():
     running_path = os.path.dirname(os.path.abspath('main.py'))
     print(running_path)
+    return running_path
 
 def pwd(current_path):
     print(current_path)
@@ -110,8 +111,12 @@ def cd(cmd_args_lst, current_path):
     if len(cmd_args_lst) == 1:
         cddir_arg = cmd_args_lst[0]
         if os.path.exists(cddir_arg):
-            os.chdir(cddir_arg)
-            current_path = str(Path(os.getcwd()).resolve())
+            # ! CD NEEDS TO BE FIXED HERE
+            if len(str(Path(os.getcwd()).resolve())) < len(current_path):
+                print('@@@ cant go more out')
+            else:
+                os.chdir(cddir_arg)
+                current_path = str(Path(os.getcwd()).resolve())
         else:
             err('The directory you entered is invalid.', '2')
     else:

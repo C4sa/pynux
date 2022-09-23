@@ -14,12 +14,8 @@ def sys_handler(cmd_args_lst):
                     exit()
                 elif cmd_args_lst[1] == '-q':
                     print('Executing ' + red('quick shutdown') + '...')
-                    exit()
-                elif cmd_args_lst[1] == '-f':
-                    exec(open('pynux/altf4up.pyw'))
-                    pyautogui.keyDown('alt')
-                    pyautogui.keyDown('f4')                    
+                    exit()              
             else:
                 err('The argument(s) ' + arg + ' couldn\'t be processed.', '2')
     else:
-        print('Arguments for \033[1;34msys\033[0m:\n\tsd - System shutdown.\n\t\t-q - Quick shutdown.\n\t\t-f - Forcibly close the terminal (useful for devs).')
+        print('Arguments for \033[1;34msys\033[0m:\n\tsd - System shutdown.\n\t\t-q - Quick shutdown.')
