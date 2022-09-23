@@ -2,6 +2,7 @@ import os
 import shutil
 import pickle
 import webbrowser
+from pathlib import Path
 from pynux.col import *
 from pynux.log import *
 
@@ -59,13 +60,13 @@ def toggle_welcome_msg(cmd_args_lst, show_welcome_msg):
             show_welcome_msg = True
             # pickle save
             with open('root/etc/options.txt', 'wb') as f:
-                pickle.dump([show_welcome_msg], f, protocol=2)
+                pickle.dump(show_welcome_msg, f, protocol=2)
         elif cmd_args_lst[0] == 'off':
             print('The welcome message will ' + red('no longer') + ' be visible.')
             show_welcome_msg = False
             # pickle save
             with open('root/etc/options.txt', 'wb') as f:
-                pickle.dump([show_welcome_msg], f, protocol=2)
+                pickle.dump(show_welcome_msg, f, protocol=2)
         else:
             err('One or more argument(s) couldn\'t be processed.', '2')
     else:
@@ -81,7 +82,7 @@ def welcome_msg_status(show_welcome_msg):
 
 def cat(cmd_args_lst):
     if len(cmd_args_lst) == 0:
-        print('Arguments for ' + blue('cat') + ':\n\t[directory] - Path for the file you are concatenating.')
+        print('Arguments for ' + blue('cat') + ':\n\t[path] - Path for the file you are concatenating.')
         return
 
     if len(cmd_args_lst) == 1:
@@ -95,5 +96,25 @@ def cat(cmd_args_lst):
         err('Expected only 1 argument ([path])', '3')
 
 def prd():
-    path = os.path.dirname(os.path.abspath('main.py'))
-    print(path)
+    running_path = os.path.dirname(os.path.abspath('main.py'))
+    print(running_path)
+
+def pwd(current_path):
+    print(current_path)
+
+def cd(cmd_args_lst, current_path):
+    if len(cmd_args_lst) == 0:
+        print('Arguments for ' + blue('cd') + ':\n\t[directory] - Directory you are going into.')
+        return current_path
+
+    if len(cmd_args_lst) == 1:
+        cddir_arg = cmd_args_lst[0]
+        if os.path.exists(cddir_arg):
+            os.chdir(cddir_arg)
+            current_path = str(Path(os.getcwd()).resolve())
+        else:
+            err('The directory you entered is invalid.', '2')
+    else:
+        err('Expected only 1 argument ([directory])', '3')
+    
+    return current_path

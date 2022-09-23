@@ -2,14 +2,23 @@
 from pynux import *
 import webbrowser
 import pickle
+import getpass
 
 # variables
 username = 'user'
 hostname = 'host'
 
 current_user = username
+current_path = '~'
 
-prefix_user = '\033[1;36m┌──(\033[1;34m' + username + '@' + hostname + '\033[1;36m)-[\033[1;32m~\033[1;36m]\n└─\033[1;34m$ \033[0m'
+win_user = getpass.getuser()
+win_home_drive = os.getenv('HOMEDRIVE')
+win_home_path = os.getenv('HOMEPATH')
+
+default_path = win_home_drive + win_home_path
+current_path = default_path
+
+prefix_user = cyan('┌──(') + blue(username + '@' + hostname) + cyan(') - [') + green(current_path) + cyan(']') + cyan('\n└─') + blue('$ ')
 
 sudoers = []
 
@@ -36,16 +45,26 @@ else:
     print(custom_motd_text + '\n')
 
 # main
-while True: 
+while True:
+    if current_path == default_path:
+        display_path = '~'
+    else:
+        display_path = current_path
+        #display_path = display_path.replace(default_path, '')
+
+    prefix_user = cyan('┌──(') + blue(username + '@' + hostname) + cyan(') - [') + green(display_path) + cyan(']') + cyan('\n└─') + blue('$ ')
+
     cmd = input(prefix_user)
     cmd_args_lst = cmd.split()
+
     if len(cmd_args_lst) == 0:
         # blank command, or space
         continue
     else:
         cmd = cmd_args_lst[0]
         if cmd == 'instr':
-            print('instructions will go here soon™')
+            # TODO: instructions / help
+            print('instructions will go here soon™');
 
         elif cmd == 'blank':
             blank()
@@ -61,9 +80,6 @@ while True:
 
         elif cmd == 'motd':
             motd()
-
-        elif cmd == 'dbg':
-            cyan('@@@ debug')
 
         elif cmd == 'sudoer':
             sudoer_mng(cmd_args_lst[1:], current_user, sudoers)
@@ -83,10 +99,14 @@ while True:
         elif cmd == 'prd':
             prd()
 
-        elif cmd == 'w2s':
-            print('settings written to root/etc/options.txt')
-            with open('root/etc/options.txt', 'wb') as f:
-                    pickle.dump([show_welcome_msg], f, protocol=2)
+        elif cmd == 'pwd':
+            pwd(current_path)
 
+        elif cmd == 'cd':
+            current_path = cd(cmd_args_lst[1:], current_path)
+
+        elif cmd == 'aaa':
+            aaa()
+            
         else:
             err('Command \"' + cmd + '\" is not defined.', '1')
